@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { AbmAlumnosComponent } from './abm-alumnos/abm-alumnos.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EstudiantesService } from './services/estudiantes.service';
 
 export interface Estudiante {
   id: number;
@@ -15,42 +17,33 @@ export interface Estudiante {
   templateUrl: './tablas.component.html',
   styleUrls: ['./tablas.component.scss']
 })
-export class TablasComponent {
+export class TablasComponent implements OnInit {
 
-  estudiantes: Estudiante[] = [
-    {
-      id: 1,
-      nombre: 'Juan',
-      apellido: 'Sosa',
-      fecha_registro: new Date()
-    },
-    {
-      id: 2,
-      nombre: 'Miriam',
-      apellido: 'Paez',
-      fecha_registro: new Date()
-    },
-    {
-      id: 3,
-      nombre: 'Cynthia',
-      apellido: 'Coronel',
-      fecha_registro: new Date()
-    },
-  ];
+  dataSource = new MatTableDataSource<Estudiante>();
 
-  dataSource = new MatTableDataSource(this.estudiantes);
+  displayedColumns: string[] = ['id', 'nombreCompleto', 'fecha_registro', 'eliminar', 'detalle'];
 
-  displayedColumns: string[] = ['id', 'nombreCompleto', 'fecha_registro', 'eliminar'];
+
+  constructor(
+    private matDialog: MatDialog,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private estudiantesService: EstudiantesService,
+  ) {}
+
+  ngOnInit(): void {
+    this.estudiantesService.obtenerEstudiantes()
+      .subscribe((estudiantes) => {
+        this.dataSource.data = estudiantes;
+      })
+  }
 
   aplicarFiltros(ev: Event): void {
     const inputValue = (ev.target as HTMLInputElement)?.value;
     this.dataSource.filter = inputValue?.trim()?.toLowerCase();
   }
 
-  constructor(private matDialog: MatDialog) {}
-
-
-  crearAlumno(): void {
+  crearEstudiante(): void {
     const dialog = this.matDialog.open(AbmAlumnosComponent)
     dialog.afterClosed().subscribe((valor) => {
       if (valor) {
@@ -66,7 +59,7 @@ export class TablasComponent {
     })
   }
 
-  editarAlumno(alumnoParaEditar: Estudiante): void {
+  editarEstudiante(alumnoParaEditar: Estudiante): void {
     const dialog = this.matDialog.open(AbmAlumnosComponent, {
       data: {
         alumnoParaEditar
@@ -83,9 +76,15 @@ export class TablasComponent {
     })
   }
 
-  eliminarAlumno(alumnoParaEliminar: Estudiante): void {
+  eliminarEstudiante(alumnoParaEliminar: Estudiante): void {
     this.dataSource.data = this.dataSource.data.filter(
       (alumnoActual) => alumnoActual.id !== alumnoParaEliminar.id,
     );
+  }
+
+  verDetalleDeAlumno(estudianteId: number): void {
+    // this.router.navigate(['dashboard', 'tablas', estudianteId]);
+
+    this.router.navigate([estudianteId], { relativeTo: this.activatedRoute });
   }
 }

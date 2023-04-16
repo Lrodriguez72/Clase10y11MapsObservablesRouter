@@ -2,7 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { enviroment } from 'src/environments/environments';
 import { AuthService } from '../core/services/auth.service';
 import { Usuario } from '../core/models';
-import { Observable, Subject, Subscription, filter, map, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import navItems from './nav-items';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +17,8 @@ export class DashboardComponent implements OnDestroy {
   authUser$: Observable<Usuario>;
 
   destroyed$ = new Subject<void>();
+
+  navItems = navItems;
 
   constructor(private authService: AuthService) {
 

@@ -1,0 +1,5 @@
+<ng-container *ngIf="estudiante$ | async">
+
+  <h1>{{ (estudiante$ | async)?.nombre }}</h1>
+  <p>{{ (estudiante$ | async)?.fecha_registro | date: 'dd/MM/YYYY' }}</p>
+</ng-container>

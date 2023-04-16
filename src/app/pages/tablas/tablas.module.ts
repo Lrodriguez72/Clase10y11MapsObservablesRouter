@@ -4,19 +4,21 @@ import { TablasComponent } from './tablas.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { PipesModule } from 'src/app/shared/pipes/pipes.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AbmAlumnosComponent } from './abm-alumnos/abm-alumnos.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { EstudianteDetalleComponent } from './pages/estudiante-detalle/estudiante-detalle.component';
 
 
 @NgModule({
   declarations: [
     TablasComponent,
-    AbmAlumnosComponent
+    AbmAlumnosComponent,
+    EstudianteDetalleComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +29,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatDialogModule,
     MatInputModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule,
   ],
   exports: [
     TablasComponent
