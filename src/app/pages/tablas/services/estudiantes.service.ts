@@ -1,42 +1,41 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, of } from 'rxjs';
+import { BehaviorSubject, Observable, map, of } from 'rxjs';
 import { Estudiante } from '../tablas.component';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EstudiantesService {
-
-  private estudiantes$ = of([
+  private estudiantes$ = new BehaviorSubject<Estudiante[]>([
     {
       id: 1,
       nombre: 'Juan',
       apellido: 'Sosa',
-      fecha_registro: new Date()
+      fecha_registro: new Date(),
     },
     {
       id: 2,
       nombre: 'Miriam',
       apellido: 'Paez',
-      fecha_registro: new Date()
+      fecha_registro: new Date(),
     },
     {
       id: 3,
       nombre: 'Cynthia',
       apellido: 'Coronel',
-      fecha_registro: new Date()
+      fecha_registro: new Date(),
     },
-  ])
+  ]);
 
-  constructor() { }
+  constructor() {}
 
   obtenerEstudiantes(): Observable<Estudiante[]> {
-    return this.estudiantes$
+    return this.estudiantes$.asObservable();
   }
 
   obtenerEstudiantePorId(id: number): Observable<Estudiante | null> {
     return this.estudiantes$.pipe(
-      map((estudiantes) => estudiantes.find((s) => s.id === id) || null),
-    )
+      map((estudiantes) => estudiantes.find((s) => s.id === id) || null)
+    );
   }
 }
